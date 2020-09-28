@@ -6,7 +6,7 @@ provider "aws" {
 resource "aws_security_group" "sg_group" {
   name        = "TLS"
   description = "Allow TLS inbound traffic"
-  vpc_id      = "vpc-30405c58"
+  vpc_id      = "vpc-30405c58"              // VPC ID assigned by AWS
 
   ingress {
     description = "SSH"
@@ -40,14 +40,14 @@ resource "aws_security_group" "sg_group" {
 resource "aws_instance" "tfinst" {
   ami = "ami-0447a12f28fddb066"
   instance_type = "t2.micro"
-  key_name = "keyos1"
+  key_name = "keyname"                       // AWS key name to connect to instance via ssh
   security_groups = [ aws_security_group.sg_group.id ]
-  subnet_id = "subnet-e3bcd7af"
+  subnet_id = "subnet-e3bcd7af"             // Subnet ID assigned by AWS
   
   connection {
     type = "ssh"
     user = "ec2-user"
-    private_key = file("C:/Users/KIIT/Desktop/Hybrid M.Cloud/keyos1.pem")
+    private_key = file("file-path/keyname")         // file-path of the key used
     host = aws_instance.tfinst.public_ip
   }
 
@@ -88,7 +88,7 @@ resource "null_resource" "mount" {
   connection {
     type = "ssh"
     user = "ec2-user"
-    private_key = file("C:/Users/KIIT/Desktop/Hybrid M.Cloud/keyos1.pem")
+    private_key = file("file-path/keyname")         // file-path of the key used
     host = aws_instance.tfinst.public_ip
   }
 
@@ -131,7 +131,7 @@ resource "aws_s3_bucket_object" "terraform_bucket_task_1_object" {
   bucket = aws_s3_bucket.terraform_bucket_task_1.bucket
   key = "cldcomp.jpg"
   acl = "public-read"
-  source = "C:/Users/KIIT/Desktop/Hybrid M.Cloud/cldcomp.jpg"
+  source = "local-image-path/cldcomp.jpg"                       // file-path of local image to upload as S3 object
 }
 
 resource "aws_cloudfront_distribution" "terraform_distribution_1" {
