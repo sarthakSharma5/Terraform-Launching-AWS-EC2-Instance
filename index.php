@@ -1,9 +1,8 @@
+<br>
 <b>Instance launched using Terraform</b>
-
 <br>
 <pre>
 <?php
-
-print 'ifconfig';
+print `ifconfig`;
 ?>
 </pre>
